@@ -9,10 +9,14 @@
     <h1> 250 best movies</h1>
     <main>
       <section>
-        <h2>Sort by</h2>
-        <label><input type="radio" name="sortBy" value="year" checked>Year</label>
-        <label><input type="radio" name="sortBy" value="rank" >Rang</label>
+        <h2>Sort by:</h2> 
+        <label><input type="radio" name="sortBy" value="rank" checked>Rang</label>
+        <label><input type="radio" name="sortBy" value="year" >Year</label>
         <label><input type="radio" name="sortBy" value="title" >Alfabetisch</label>
+        <h2>Sort year</h2> 
+        <label><input type="radio" name="filter" value="all" checked>all</label>
+        <label><input type="radio" name="filter" value="year-2000" >-2000</label>
+        <label><input type="radio" name="filter" value="year+2000" >+2000</label>
       </section>
       <section id="content_section">
       </section>

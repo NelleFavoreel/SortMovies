@@ -6,9 +6,12 @@ const app = {
 	movies: [],
 	userInput: {
 		selectedSort: "title",
+		selectedAll: "all",
 	},
 	applyAll() {
+		this.movies = app.movies;
 		this.sortMovies();
+		this.filterMovies();
 		this.renderMovies();
 	},
 	init: function () {
@@ -17,6 +20,13 @@ const app = {
 		sortRadios.forEach(function (radio) {
 			radio.addEventListener("change", function (event) {
 				app.userInput.selectedSort = this.value;
+				app.applyAll();
+			});
+		});
+		const filterRadios = document.getElementsByName("filter");
+		filterRadios.forEach(function (radio) {
+			radio.addEventListener("change", function (event) {
+				app.userInput.selectedAll = this.value;
 				app.applyAll();
 			});
 		});
@@ -32,6 +42,22 @@ const app = {
 				});
 			});
 		console.log(app.userInput.selectedSort);
+	},
+	filterMovies() {
+		let originalMovies = [...this.movies]; // Make a copy of the original movies array
+		let filteredList = originalMovies.filter(function (movie) {
+			let year = movie.year;
+			let filter = app.userInput.selectedAll;
+			if (filter === "all") {
+				return true;
+			} else if (filter === "year-2000") {
+				return year < 2000;
+			} else if (filter === "year+2000") {
+				return year >= 2000;
+			}
+		});
+		console.log("filtered list", filteredList);
+		this.movies = filteredList;
 	},
 	sortMovies() {
 		app.movies.sort(function (a, b) {
