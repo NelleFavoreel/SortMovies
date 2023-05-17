@@ -5,6 +5,7 @@ import Movie from "./Movie.js";
 const app = {
 	movies: [],
 	filteredMovies: [],
+	chart: [],
 	userInput: {
 		selectedSort: "title",
 		selectedAll: "all",
@@ -70,6 +71,51 @@ const app = {
 		});
 		app.filteredMovies = filteredList;
 		console.log(filteredList);
+
+		const canvas = document.getElementById("myChart");
+		const context = canvas.getContext("2d");
+
+		// Destroy the existing chart if it exists
+		if (canvas.chart) {
+			canvas.chart.destroy();
+		}
+
+		// Generate chart data based on the filtered movies
+		const moviesByYear = {};
+
+		app.filteredMovies.forEach(function (movie) {
+			const year = movie.year;
+			if (!moviesByYear.hasOwnProperty(year)) {
+				moviesByYear[year] = 0;
+			}
+			moviesByYear[year]++;
+		});
+
+		const chartData = {
+			labels: Object.keys(moviesByYear),
+			data: Object.values(moviesByYear),
+		};
+
+		canvas.chart = new Chart(context, {
+			type: "bar",
+			data: {
+				labels: chartData.labels,
+				datasets: [
+					{
+						label: "Number of Movies",
+						data: chartData.data,
+						borderWidth: 1,
+					},
+				],
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true,
+					},
+				},
+			},
+		});
 	},
 
 	sortMovies() {
