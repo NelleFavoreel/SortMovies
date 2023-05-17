@@ -3,20 +3,25 @@
     <title>Werkstuk</title>
     <link href="assets/reset.css" rel="stylesheet" />
     <link href="assets/style.css" rel="stylesheet" />
+    <link href="./js/src/index.html" rel="html" />
     <script type="module" src="./js/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <h1> 250 best movies</h1>
     <main>
       <section>
         <h2>Sort by:</h2> 
-        <label><input type="radio" name="sortBy" value="rank" checked>Rang</label>
+        <label><input type="radio" name="sortBy" value="rank" >Rang</label>
         <label><input type="radio" name="sortBy" value="year" >Year</label>
-        <label><input type="radio" name="sortBy" value="title" >Alfabetisch</label>
+        <label><input type="radio" name="sortBy" value="title" checked>Alfabetisch</label>
         <h2>Sort year</h2> 
         <label><input type="radio" name="filter" value="all" checked>all</label>
         <label><input type="radio" name="filter" value="year-2000" >-2000</label>
         <label><input type="radio" name="filter" value="year+2000" >+2000</label>
+        <div class="grafic">
+          
+        </div>
       </section>
       <section id="content_section">
       </section>

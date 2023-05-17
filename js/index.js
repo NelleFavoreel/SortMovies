@@ -4,14 +4,16 @@ import Movie from "./Movie.js";
 
 const app = {
 	movies: [],
+	filteredMovies: [],
 	userInput: {
 		selectedSort: "title",
 		selectedAll: "all",
 	},
 	applyAll() {
 		this.movies = app.movies;
-		this.sortMovies();
 		this.filterMovies();
+		this.sortMovies();
+
 		this.renderMovies();
 	},
 	init: function () {
@@ -31,6 +33,7 @@ const app = {
 			});
 		});
 	},
+
 	getData() {
 		fetch("https://imdb-api.com/en/API/Top250Movies/k_3blwlx4a")
 			.then((movieList) => movieList.json())
@@ -40,27 +43,37 @@ const app = {
 					app.movies.push(movie);
 					document.querySelector("#content_section").insertAdjacentHTML("beforeend", movie.htmlString);
 				});
+				app.applyAll();
+			})
+			.catch(function (error) {
+				console.log("Error:", error);
 			});
 		console.log(app.userInput.selectedSort);
 	},
 	filterMovies() {
-		let originalMovies = [...this.movies]; // Make a copy of the original movies array
-		let filteredList = originalMovies.filter(function (movie) {
+		app.filteredMovies = app.movies;
+		//console.log(app.filteredMovies);
+		//let filteredMovies = app.filteredMovies;
+		let filteredList = app.filteredMovies.filter(function (movie) {
 			let year = movie.year;
 			let filter = app.userInput.selectedAll;
-			if (filter === "all") {
+			if (filter == "all") {
 				return true;
-			} else if (filter === "year-2000") {
+			}
+			if (filter == "year-2000") {
 				return year < 2000;
-			} else if (filter === "year+2000") {
+			}
+			if (filter == "year+2000") {
 				return year >= 2000;
 			}
+			console.log(filteredList);
 		});
-		console.log("filtered list", filteredList);
-		this.movies = filteredList;
+		app.filteredMovies = filteredList;
+		console.log(filteredList);
 	},
+
 	sortMovies() {
-		app.movies.sort(function (a, b) {
+		app.filteredMovies.sort(function (a, b) {
 			let sortBy = app.userInput.selectedSort;
 
 			if (sortBy === "rank" || sortBy === "year") {
@@ -81,7 +94,7 @@ const app = {
 
 	renderMovies() {
 		document.querySelector("#content_section").innerHTML = "";
-		app.movies.forEach(function (movie) {
+		app.filteredMovies.forEach(function (movie) {
 			document.querySelector("#content_section").insertAdjacentHTML("beforeend", movie.htmlString);
 		});
 	},
@@ -90,5 +103,4 @@ var requestOptions = {
 	method: "GET",
 	redirect: "follow",
 };
-
 app.init();
